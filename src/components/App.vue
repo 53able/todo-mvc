@@ -59,6 +59,7 @@
 <style src="todomvc-app-css/index.css"></style>
 
 <script>
+import Vue from "vue";
 import { mapActions, mapState } from "vuex";
 
 import TodoItem from "./TodoItem.vue";
@@ -68,7 +69,7 @@ const filters = {
   active: todos => todos.filter(todo => !todo.done),
   completed: todos => todos.filter(todo => todo.done)
 };
-export default {
+export default Vue.extend({
   components: { TodoItem },
   data() {
     return {
@@ -102,5 +103,5 @@ export default {
     pluralize: (n, w) => (n === 1 ? w : w + "s"),
     capitalize: s => s.charAt(0).toUpperCase() + s.slice(1)
   }
-};
+});
 </script>
