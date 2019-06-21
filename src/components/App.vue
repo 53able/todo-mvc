@@ -8,7 +8,8 @@
         autofocus
         autocomplete="off"
         placeholder="What needs to be done?"
-        @keyup.enter="addTodo"
+        @keyup.enter="addTodo(newTodo)"
+        v-model="newTodo"
       />
     </header>
     <!-- main section -->
@@ -48,7 +49,7 @@
       <button
         class="clear-completed"
         v-show="todos.length > remaining"
-        @click="clearCompleted"
+        @click="clearCompleted()"
       >
         Clear completed
       </button>
@@ -59,7 +60,8 @@
 <style src="todomvc-app-css/index.css"></style>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { connect } from "vuelm";
+import Todo from "../stores/todo";
 
 import TodoItem from "./TodoItem.vue";
 
@@ -68,34 +70,30 @@ const filters = {
   active: todos => todos.filter(todo => !todo.done),
   completed: todos => todos.filter(todo => todo.done)
 };
-export default {
+
+const App = {
   components: { TodoItem },
   data() {
     return {
       visibility: "all",
-      filters: filters
+      filters,
+      todos: [],
+      newTodo: ""
     };
   },
   computed: {
-    ...mapState("Todo", ["todos"]),
     allChecked() {
+      console.log("allChecked");
       return this.todos.every(todo => todo.done);
     },
     filteredTodos() {
+      console.log("this.visibility");
+      console.log(this.todos);
       return filters[this.visibility](this.todos);
     },
     remaining() {
+      console.log("remaining");
       return this.todos.filter(todo => !todo.done).length;
-    }
-  },
-  methods: {
-    ...mapActions("Todo", ["toggleAll", "clearCompleted"]),
-    addTodo(e) {
-      const text = e.target.value;
-      if (text.trim()) {
-        this.$store.dispatch("Todo/addTodo", text);
-      }
-      e.target.value = "";
     }
   },
   filters: {
@@ -103,4 +101,8 @@ export default {
     capitalize: s => s.charAt(0).toUpperCase() + s.slice(1)
   }
 };
+export default connect(
+  App,
+  { todo: Todo }
+);
 </script>

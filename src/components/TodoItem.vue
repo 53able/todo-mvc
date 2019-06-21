@@ -23,8 +23,10 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
-export default {
+import { connect } from "vuelm";
+import todo from "../stores/todo";
+
+const TodoItem = {
   name: "Todo",
   props: ["todo"],
   data() {
@@ -42,7 +44,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions("Todo", ["editTodo", "toggleTodo", "removeTodo"]),
     doneEdit(e) {
       const value = e.target.value.trim();
       const { todo } = this;
@@ -62,4 +63,9 @@ export default {
     }
   }
 };
+
+export default connect(
+  TodoItem,
+  { todo }
+);
 </script>
