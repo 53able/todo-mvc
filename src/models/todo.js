@@ -1,30 +1,23 @@
 import { store, types } from "vuelm";
 
-const STORAGE_KEY = "todos-vuejs";
-
 const Type = types("ADD_TODO", "REMOVE_TODO", "EDIT_TODO");
 
 const state = {
-  todos: JSON.parse(window.localStorage.getItem(STORAGE_KEY) || "[]")
+  todos: []
 };
 
 const updates = {
   [Type.ADD_TODO](state, todo) {
-    console.log("store.add");
     state.todos.push(todo);
-    console.log("store.state", state);
     return state;
   },
 
   [Type.REMOVE_TODO](state, todo) {
-    console.log("store.remove");
-    console.log(state.todos);
     state.todos.splice(state.todos.indexOf(todo), 1);
     return state;
   },
 
   [Type.EDIT_TODO](state, { todo, text = todo.text, done = todo.done }) {
-    console.log("store.edit");
     todo.text = text;
     todo.done = done;
   }
@@ -32,7 +25,6 @@ const updates = {
 
 const actions = {
   addTodo(text) {
-    console.log("addTodo", state.todos);
     this.update(Type.ADD_TODO, {
       text,
       done: false
@@ -52,15 +44,12 @@ const actions = {
   },
 
   toggleAll(done) {
-    console.log("toggleAll", state.todos);
     state.todos.forEach(todo => {
       this.update(Type.EDIT_TODO, { todo, done });
     });
   },
 
   clearCompleted() {
-    console.log("clearCompleted", state.todos);
-    console.log(state.todos);
     state.todos
       .filter(todo => todo.done)
       .forEach(todo => {

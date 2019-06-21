@@ -61,7 +61,7 @@
 
 <script>
 import { connect } from "vuelm";
-import Todo from "../stores/todo";
+import Todo from "../models/todo";
 
 import TodoItem from "./TodoItem.vue";
 
@@ -83,16 +83,12 @@ const App = {
   },
   computed: {
     allChecked() {
-      console.log("allChecked");
       return this.todos.every(todo => todo.done);
     },
     filteredTodos() {
-      console.log("this.visibility");
-      console.log(this.todos);
       return filters[this.visibility](this.todos);
     },
     remaining() {
-      console.log("remaining");
       return this.todos.filter(todo => !todo.done).length;
     }
   },

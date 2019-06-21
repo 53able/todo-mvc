@@ -24,7 +24,7 @@
 
 <script>
 import { connect } from "vuelm";
-import todo from "../stores/todo";
+import todo from "../models/todo";
 
 const TodoItem = {
   name: "Todo",
